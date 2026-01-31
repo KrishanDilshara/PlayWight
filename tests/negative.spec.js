@@ -4,7 +4,7 @@ const negativeScenarios = [
   { 
     id: 'Neg_Fun_0001', 
     name: 'Joined Words Stress Test', 
-    input: 'maama geddhara yanavaa', 
+    input: '????????///////', 
     expected: 'මම ගෙදර යනවා'
   },
   
@@ -18,14 +18,14 @@ const negativeScenarios = [
     id: 'Neg_Fun_0003', 
     name: 'Incorrect Spelling Test 29', 
     input: 'oyataa kohomoadha?', 
-    expected: 'ඔයාට කොහොමද?' 
+    expected: 'ඔයාට කොහොමද?'
   },
   
   { 
     id: 'Neg_Fun_0004', 
     name: 'Gibberish Input', 
     input: 'xyzabc123', 
-    expected: 'සුභ උදෑසනක්'
+    expected: 'සුභ උදෑසනක්' 
   },
   { 
     id: 'Neg_Fun_0005', 
@@ -37,36 +37,36 @@ const negativeScenarios = [
   { 
     id: 'Neg_Fun_0006', 
     name: 'Special Characters Only', 
-    input: '@#$%^&*()', 
-    expected: 'ආයුබෝවන්'
+    input: 'K@@@@', 
+    expected: 'ආයුබෝවන්' 
   },
   
   { 
     id: 'Neg_Fun_0007', 
     name: 'Very Long Repeated Input', 
-    input: 'mama '.repeat(11), 
-    expected: 'මම මම මම මම මම මම මම මම මම මම'
+    input: 'mama '.repeat(12), 
+    expected: 'මම මම මම මම මම මම මම මම මම මම' 
   },
   
   { 
     id: 'Neg_Fun_0008', 
     name: 'Mixed Case Input', 
     input: 'MaMa GeDhArA YaNaVaa', 
-    expected: 'මම ගෙදර යනවා'
+    expected: 'මම ගෙදර යනවා' 
   },
   
   { 
     id: 'Neg_Fun_0009', 
     name: 'HTML Tags in Input', 
     input: '<b>mama gedhara yanavaa</b>', 
-    expected: 'මම ගෙදර යනවා'
+    expected: 'මම ගෙදර යනවා' 
   },
   
   { 
     id: 'Neg_Fun_0010', 
     name: 'Multiple Spaces Test', 
-    input: 'mama  gedhara   yanavaa', 
-    expected: 'මම ගෙදර යනවා'
+    input: 'mama  gedddddhara   yanavaa', 
+    expected: 'මම ගෙදර යනවා' 
   }
 ];
 
@@ -76,14 +76,13 @@ for (const scenario of negativeScenarios) {
     
     const inputArea = page.getByPlaceholder('Input Your Singlish Text Here.');
     
-    if (scenario.input !== '') {
-      await inputArea.pressSequentially(scenario.input, { delay: 30 });
-    } else {
-      await inputArea.fill('');
-    }
+    await inputArea.fill('');
+    await page.waitForTimeout(500);
+    
+    await inputArea.fill(scenario.input);
     
     const outputDiv = page.locator('div.whitespace-pre-wrap.overflow-y-auto').first();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
     
     let actualOutput = '';
     try {
@@ -96,10 +95,6 @@ for (const scenario of negativeScenarios) {
     
     await page.screenshot({ path: `screenshots/${scenario.id}.png` });
     
-    expect(actualOutput).not.toBe(scenario.expected);
-    
-    if (scenario.input !== '') {
-      expect(actualOutput).toBeTruthy();
-    }
+    expect(actualOutput).toBe(scenario.expected);
   });
 }

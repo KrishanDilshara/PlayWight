@@ -153,8 +153,8 @@ const positiveScenarios = [
   { 
     id: 'Pos_Fun_0024', 
     name: 'Informal Slang', 
-    input: 'hari boss! hari!', 
-    expected: 'හරි boss! හරි!' 
+    input: 'hari machan, api yamu', 
+    expected: 'හරි මචන්, අපි යමු' 
   }
 ];
 
